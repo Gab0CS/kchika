@@ -1,8 +1,8 @@
 -- Insertar datos en la tabla AppUser
-INSERT INTO AppUser (name, age, mail, passwor) VALUES ('User1', 25, 'user1@example.com', 'password1');
-INSERT INTO AppUser (name, age, mail, passwor) VALUES ('User2', 30, 'user2@example.com', 'password2');
-INSERT INTO AppUser (name, age, mail, passwor) VALUES ('User3', 28, 'user3@example.com', 'password3');
-INSERT INTO AppUser (name, age, mail, passwor) VALUES ('User4', 29, 'user4@example.com', 'password4');
+INSERT INTO App_User (name, age, mail, passwor) VALUES ('User1', 25, 'user1@example.com', 'password1');
+INSERT INTO App_User (name, age, mail, passwor) VALUES ('User2', 30, 'user2@example.com', 'password2');
+INSERT INTO App_User (name, age, mail, passwor) VALUES ('User3', 28, 'user3@example.com', 'password3');
+INSERT INTO App_User (name, age, mail, passwor) VALUES ('User4', 29, 'user4@example.com', 'password4');
 
 -- Insertar datos en la tabla Page para cada usuario
 INSERT INTO Page (date_creation, title, id_User) VALUES (CURRENT_TIMESTAMP, 'User1 Page', 1);

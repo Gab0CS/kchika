@@ -1,16 +1,12 @@
 package com.gabo.kchika.entities;
 
-import java.time.LocalDateTime;
-
-import org.hibernate.annotations.DialectOverride.GeneratedColumns;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "AppUser")
+@Table(name = "App_User")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -22,7 +18,7 @@ public class UserEntity {
 
     private String name;
     private String mail;
-    private String password;
+    private String passwor;
     private Integer age;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

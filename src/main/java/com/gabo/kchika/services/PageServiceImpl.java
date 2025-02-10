@@ -2,6 +2,7 @@ package com.gabo.kchika.services;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gabo.kchika.dtos.PageRequest;
 import com.gabo.kchika.dtos.PageResponse;
 import com.gabo.kchika.dtos.PostRequest;
+import com.gabo.kchika.dtos.PostResponse;
 import com.gabo.kchika.entities.PageEntity;
 import com.gabo.kchika.repositories.PageRepository;
 import com.gabo.kchika.repositories.UserRepository;
@@ -48,7 +50,26 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public PageResponse readByTitle(String title) {
-        return null;
+        final var entityResponse = this.pageRepository.findByTitle(title)
+        .orElseThrow(() -> new IllegalArgumentException("Title not found")); //Find by title and handling errros
+
+        final var response = new PageResponse(); //Create response object
+        BeanUtils.copyProperties(entityResponse, response); //Copy properties from entity
+
+        //Get post responses from entity
+        final List<PostResponse> postResponses = entityResponse.getPosts()
+        .stream() //Convert to stream
+        .map(postE ->
+            PostResponse //Transforma postEntity into postResponse
+                .builder()
+                .img(postE.getImg())
+                .content(postE.getContent())
+                .dateCreation(postE.getDateCreation())
+                .build()
+        ).toList(); //Convert to list
+
+        response.setPosts(postResponses); //Set list of post
+        return response;
     }
 
     @Override

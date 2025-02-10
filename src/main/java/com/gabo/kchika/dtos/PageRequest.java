@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class PageRequest {
-
     private String title;
     private Long userId;
     
