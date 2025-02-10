@@ -74,12 +74,34 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public PageResponse update(PageRequest page, String title) {
-        return null;
+        final var entityFromDB = this.pageRepository.findByTitle(title)
+        .orElseThrow(() -> new IllegalArgumentException("Title not found")); //Find by title and handling errros
+
+        entityFromDB.setTitle(page.getTitle()); //Update fields from param page
+
+        var pageCreated = this.pageRepository.save(entityFromDB);
+        final var response = new PageResponse();
+        BeanUtils.copyProperties(pageCreated, response);
+        
+        return response;
     }
 
     @Override
     public void delete(String title) {
 
+        // final var entityFromDB = this.pageRepository.findByTitle(title)
+        // .orElseThrow(() -> new IllegalArgumentException("Title not found")); //Find by title and handling errros
+
+        // this.pageRepository.delete(entityFromDB);
+
+        if (this.pageRepository.existsByTitle(title)) {
+            log.info("Delinting page");
+            this.pageRepository.deleteByTitle(title);
+        } else {
+            log.error("Error to delete");
+            throw new IllegalArgumentException("Cant delete because id not exist");
+        }
+        
     }
 
     @Override

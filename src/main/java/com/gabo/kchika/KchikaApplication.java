@@ -19,13 +19,6 @@ public class KchikaApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		var req = PageRequest.builder()
-			.userId(4L)
-			.title("Gabo")
-			.build();
-
-		var res = this.pageService.readByTitle("User2 Page");
-
-		System.out.println(res);
+		this.pageService.delete("User3 Page");
 	}
 }
