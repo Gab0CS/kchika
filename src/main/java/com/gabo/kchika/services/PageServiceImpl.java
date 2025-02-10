@@ -13,6 +13,7 @@ import com.gabo.kchika.dtos.PageResponse;
 import com.gabo.kchika.dtos.PostRequest;
 import com.gabo.kchika.dtos.PostResponse;
 import com.gabo.kchika.entities.PageEntity;
+import com.gabo.kchika.exceptions.TitleNotValidException;
 import com.gabo.kchika.repositories.PageRepository;
 import com.gabo.kchika.repositories.UserRepository;
 
@@ -30,6 +31,8 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public PageResponse create(PageRequest page) {
+        this.validTitle(page.getTitle());
+        
         //Upsert if id exists update if not creates
         final var entity = new PageEntity();
         
@@ -74,6 +77,8 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public PageResponse update(PageRequest page, String title) {
+        this.validTitle(page.getTitle());
+
         final var entityFromDB = this.pageRepository.findByTitle(title)
         .orElseThrow(() -> new IllegalArgumentException("Title not found")); //Find by title and handling errros
 
@@ -112,6 +117,12 @@ public class PageServiceImpl implements PageService {
     @Override
     public PageResponse deletePost(Long idPost) {
         return null;
+    }
+
+    private void validTitle(String title){
+        if(title.contains("putitos") || title.contains("jotitos")){
+            throw new TitleNotValidException("Title can't contain bad words");
+        }
     }
     
 }
