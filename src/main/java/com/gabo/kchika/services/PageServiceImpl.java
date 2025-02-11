@@ -13,6 +13,7 @@ import com.gabo.kchika.dtos.PageResponse;
 import com.gabo.kchika.dtos.PostRequest;
 import com.gabo.kchika.dtos.PostResponse;
 import com.gabo.kchika.entities.PageEntity;
+import com.gabo.kchika.entities.PostEntity;
 import com.gabo.kchika.exceptions.TitleNotValidException;
 import com.gabo.kchika.repositories.PageRepository;
 import com.gabo.kchika.repositories.UserRepository;
@@ -110,12 +111,39 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public PageResponse createPost(PostRequest post) {
+    public PageResponse createPost(PostRequest post, String title) {
+        final var pageToUpdate = this.pageRepository.findByTitle(title)
+        .orElseThrow(() -> new IllegalArgumentException("Title not found"));
+
+        final var postEntity = new PostEntity();
+        BeanUtils.copyProperties(post, postEntity);
+        postEntity.setDateCreation(LocalDateTime.now());
+
+        pageToUpdate.addPost(postEntity);
+
+        final var responseEntity = this.pageRepository.save(pageToUpdate);
+
+        final var response = new PageResponse();
+        BeanUtils.copyProperties(responseEntity, response);
+
+        final List<PostResponse> postResponses = responseEntity.getPosts()
+        .stream() //Convert to stream
+        .map(postE ->
+            PostResponse //Transforma postEntity into postResponse
+                .builder()
+                .img(postE.getImg())
+                .content(postE.getContent())
+                .dateCreation(postE.getDateCreation())
+                .build()
+        ).toList(); //Convert to list
+
+        response.setPosts(postResponses);
+
         return null;
     }
 
     @Override
-    public PageResponse deletePost(Long idPost) {
+    public PageResponse deletePost(Long idPost, String title) {
         return null;
     }
 

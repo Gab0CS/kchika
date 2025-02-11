@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class PostRequest {
-    
     private String content;
     private String img;
 }

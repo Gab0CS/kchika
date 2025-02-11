@@ -15,6 +15,7 @@ import org.springframework.web.service.annotation.GetExchange;
 
 import com.gabo.kchika.dtos.PageRequest;
 import com.gabo.kchika.dtos.PageResponse;
+import com.gabo.kchika.dtos.PostRequest;
 import com.gabo.kchika.services.PageService;
 
 import jakarta.annotation.PostConstruct;
@@ -64,6 +65,14 @@ public class PageController {
         } else {
             return title;
         }
+    }
+
+    @PostMapping(path = "{title}/post")
+    public ResponseEntity<PageResponse> postPage(
+        @RequestBody PostRequest request,
+        @PathVariable String title) {
+        
+        return ResponseEntity.ok(this.pageService.createPost(request, title));
     }
 
 }
