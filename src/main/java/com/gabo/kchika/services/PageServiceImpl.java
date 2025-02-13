@@ -135,7 +135,7 @@ public class PageServiceImpl implements PageService {
                 .content(postE.getContent())
                 .dateCreation(postE.getDateCreation())
                 .build()
-        ).toList(); //Convert to list
+        ).toList(); //Converts to list
 
         response.setPosts(postResponses);
 
